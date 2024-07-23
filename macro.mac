@@ -1,0 +1,126 @@
+#Doc so nguyen
+.macro read_int(%int_var)
+    li $v0, 5           # Load immediate syscall code for read_int
+    syscall             # Execute syscall to read integer
+    sw $v0,%int_var  # Move input integer from $v0 to specified register
+.end_macro
+##############################
+#Doc so nguyen co nhac
+.macro read_prompt_int(%prompt , %int_var)
+    print_str %prompt 
+    li $v0, 5           # Load immediate syscall code for read_int
+    syscall             # Execute syscall to read integer
+    sw $v0,%int_var  # Move input integer from $v0 to specified register
+.end_macro
+##############################
+#in so nguyen
+.macro print_int(%int_var)
+    li $v0, 1           # Load immediate syscall code for print_int
+    lw $a0, %int_var   # Move integer to be printed to $a0
+    syscall             # Execute syscall to print integer
+.end_macro
+
+.macro print_reg($reg)
+    li $v0, 1           # Load immediate syscall code for print_int
+    addi $a0 , $reg , 0  # Move integer to be printed to $a0
+    syscall             # Execute syscall to print integer
+.end_macro
+##############################
+.macro print_str(%str_var)
+    li $v0, 4          # Load immediate syscall code for print_int
+    la $a0, %str_var   # Move integer to be printed to $a0
+    syscall             # Execute syscall to print integer
+    
+.end_macro
+##############################
+.macro read_prompt_str(%prompt , %str_var)
+    print_str %prompt 
+    li $v0, 5           # Load immediate syscall code for read_int
+    syscall             # Execute syscall to read integer
+    sw $v0,%int_var  # Move input integer from $v0 to specified register
+.end_macro
+##############################
+#doc va in so nguyen
+.macro read_print_int(%text , %int_var)
+    print_str %text    
+    read_int %int_var
+    print_int %int_var
+    
+.end_macro 
+##############################
+#ham xuat char
+.macro print_char(%char)
+li $v0 , 11
+addi $a0 , $zero , %char
+syscall
+.end_macro
+##############################
+#ham doc
+.macro read_char(%char)
+li $v0 , 12
+addi $a0 , $zero , %char
+syscall
+lb $a0 , %char
+.end_macro
+##############################
+#ham nhan 2 so nguyen  
+.macro multiply_int(%num1 , %num2 , %result)   #using label 	
+lw $t0 , %num1
+lw $t1 , %num2 
+
+mult $t0 , $t1 	#nhan 2 so 
+mflo $v0		#luu phan thap vao $t2		
+mfhi $v1 		#luu phan cao vao $t3 
+
+sw $v0 , %result 
+.end_macro
+ ##############################   
+.macro multiply(%num1 , %num2 , $result)  #using register
+lw $t1 , %num1
+lw $t2 , %num2 
+
+mult $t1 , $t2 	#nhan 2 so 
+mflo $result	#luu phan thap vao $t2		
+mfhi $v1 		#luu phan cao vao $t3 
+.end_macro	
+##############################
+.macro sum(%num1 , %num2, %result)  # sum function of 2 int (num1+num2) and return to result label 
+lw $t0 , %num1 
+lw $t1 , %num2
+add $t0 , $t0 , $t1 
+sw $t0 , %result 
+.end_macro 
+##############################
+.macro subtraction(%num1 , %num2 , %result) #sub function of 2 int (num1-num2) and return to result label 
+lw $t0 , %num1
+lw $t1 , %num2
+sub $t0 , $t0 , $t1
+sw $t0 , %result 
+.end_macro 
+
+##############################
+#ham thuc hien phep chia num1/num2
+.macro division(%num1 , %num2 , %result)
+lw $t0 , %num1 
+lw $t1 , %num2 
+div $t0 , $t1 
+
+mflo $t0 #load ket qua vao thanh ghi $t0
+sw $t0 , %result
+.end_macro 
+
+##############################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
